@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">memo</string>
+    <string name="add_title_text">新建备忘录</string>
+    <string name="button_back">＜</string>
+    <string name="edit_hint">请输入标题</string>
+    <string name="text_tile">标题：</string>
+    <string name="edit_body_hint">请输入内容...</string>
+    <string name="str_upcoming">代办</string>
+    <string name="str_notice">提醒</string>
+    <string name="button_save">√</string>
+    <string name="cancle">取消</string>
+    <string name="edit_title_time_hint">这里显示时间</string>
+    <string name="edit_title_text">新建备忘录</string>
+    <string name="title">请选择时间</string>
+    <string name="commit">确定</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+
+
+    <string name="select_date">选择日期</string>
+    <string name="current_date">当前日期</string>
+    <string name="select_time">选择时间</string>
+    <string name="current_time">当前时间</string>
 </resources>

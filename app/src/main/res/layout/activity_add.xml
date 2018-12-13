@@ -6,4 +6,133 @@
     android:layout_height="match_parent"
     tools:context=".AddActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/headLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="@string/add_title_text"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+          >
+
+            <LinearLayout
+                android:id="@+id/edit_title_lay_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/edit_title_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_tile"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/edit_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_hint"
+                        android:textSize="15sp"
+
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_below="@id/edit_title_lay_lay"
+                android:id="@+id/selectTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/color2"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:text="@string/current_time"
+                    android:textColor="@color/color4"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/currentTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
+                    android:textColor="@color/color5"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+            <EditText
+                android:id="@+id/edit_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/selectTime"
+                android:layout_above="@+id/button_back"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:hint="@string/edit_body_hint"
+                android:textSize="12sp" />
+            <Button
+                android:id="@+id/button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="#fffff0"
+                android:text="@string/button_back"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="#fffff0"
+                android:text="@string/button_save"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

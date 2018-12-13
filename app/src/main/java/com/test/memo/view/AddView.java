@@ -7,10 +7,11 @@ import android.graphics.EmbossMaskFilter;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 
 ;
 
-public class AddView extends View {
+public class AddView extends Button {
     public AddView(Context context) {
         super(context);
     }
