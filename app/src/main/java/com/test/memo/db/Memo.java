@@ -2,9 +2,10 @@ package com.test.memo.db;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Memo extends DataSupport{
+public class Memo extends DataSupport implements Serializable {
     private int id;
     private Date data;
     private String title;

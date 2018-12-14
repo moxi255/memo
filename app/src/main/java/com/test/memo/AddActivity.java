@@ -19,6 +19,8 @@ import com.test.memo.db.Memo;
 import com.test.memo.service.LongRunningService;
 import com.test.memo.widget.CustomDatePicker;
 
+import org.litepal.crud.DataSupport;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,20 +29,34 @@ import java.util.Locale;
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout selectTime;
     LongRunningService longRunningService;
-    private TextView editTitle,edit_body;
+    private TextView editTitle,edit_body,edit_headText;
     private TextView currentTime;
     private Button saveBtn,backBtn;
     private CustomDatePicker customDatePicker1;
     Context context;
     Bundle bundle;
+    Memo memo;
+    Boolean flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         bindView();
         initDatePicker();
+        memo=(Memo)getIntent().getSerializableExtra("memo");
+        if(memo!=null){
+            edit_body.setText(memo.getContent());
+            editTitle.setText(memo.getTitle());
+            edit_headText.setText("修改备忘录");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String date = dateFormat.format(memo.getData());
+            currentTime.setText(date);
+            flag=true;
+
+        }
     }
     private void bindView(){
+        edit_headText=findViewById(R.id.headText);
         selectTime =  findViewById(R.id.selectTime);
         selectTime.setOnClickListener(this);
         currentTime =  findViewById(R.id.currentTime);
@@ -52,6 +68,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         backBtn.setOnClickListener(this);
         context=AddActivity.this;
         bundle=new Bundle();
+        Intent serviceIntent =new Intent(AddActivity.this,LongRunningService.class);
+        bindService(serviceIntent,mConnection, Context.BIND_AUTO_CREATE);
     }
     @Override
     public void onClick(View v) {
@@ -63,34 +81,50 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 customDatePicker1.show(currentTime.getText().toString());
                 break;
             case R.id.button_save:
-                Intent serviceIntent =new Intent(AddActivity.this,LongRunningService.class);
-                bindService(serviceIntent,mConnection, Context.BIND_AUTO_CREATE);
-
-
                 Calendar calendar = Calendar.getInstance();
-                Log.i("1235",String.valueOf(calendar.getTimeInMillis()));
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                long time=0;
+                Date date=new Date();
+                String title="",body="";
                 try {
-                    Date date = dateFormat.parse(currentTime.getText().toString());
+                    date = dateFormat.parse(currentTime.getText().toString());
                     calendar.setTime(date);
-                    long time=calendar.getTimeInMillis();
-                    String title=editTitle.getText().toString();
-                    String body=edit_body.getText().toString();
-                    if(check(title,body)){
-                        longRunningService.addAlarm(context,0,bundle,time);
-                        Memo memo =new Memo();
-                        memo.setContent(body);
-                        memo.setData(date);
-                        memo.setTitle(title);
-                        Toast.makeText(this, "提醒设置成功", Toast.LENGTH_LONG).show();
-                    }
-
+                    time = calendar.getTimeInMillis();
+                    title = editTitle.getText().toString();
+                    body = edit_body.getText().toString();
                 }catch  (ParseException e)
                 {
                     e.printStackTrace();
                 }
+                if(flag){
+                    if(check(title,body)){
+                        memo.setTitle(title);
+                        memo.setData(date);
+                        memo.setContent(body);
+                        memo.update(memo.getId());
+                        longRunningService.cancelAlarm(context,memo.getId(),bundle);
+                        longRunningService.addAlarm(context,memo.getId(),bundle,time);
+                        Toast.makeText(this, "提醒修改成功", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    if(check(title,body)){
+
+                        Memo memo =new Memo();
+                        memo.setContent(body);
+                        memo.setData(date);
+                        memo.setTitle(title);
+                        memo.save();
+                        Log.i("aaa",String.valueOf(memo.getId()));
+                        longRunningService.addAlarm(context,memo.getId(),bundle,time);
+                        Toast.makeText(this, "提醒设置成功", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+
                 break;
             case R.id.button_back:
+                startActivity(new Intent(AddActivity.this,MainActivity.class));
                 break;
         }
     }

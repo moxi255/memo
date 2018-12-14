@@ -32,15 +32,26 @@ public class LongRunningService extends Service {
         // TODO: Return the communication channel to the service.
         return mBinder;
     }
-    public static void addAlarm(Context context, int requestCode, Bundle bundle, Long second){
+    public static void addAlarm(Context context, int alarmId, Bundle bundle, Long second){
         Log.i("1234","1234");
         Log.i("s",second.toString());
         Intent intent = new Intent(context,AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,requestCode,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0);
         //注册新提醒
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
         alarmManager.set(AlarmManager.RTC_WAKEUP,second,pendingIntent);
+    }
+    public static void cancelAlarm(Context context, int alarmId, Bundle bundle){
+
+        Intent intent = new Intent(context,AlarmReceiver.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtras(bundle);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0);
+        //注册新提醒
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

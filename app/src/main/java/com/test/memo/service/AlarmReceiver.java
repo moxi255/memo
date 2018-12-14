@@ -16,7 +16,7 @@ import com.test.memo.R;
 import com.test.memo.util.MyApplication;
 
 public class AlarmReceiver extends BroadcastReceiver {
- 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         showNotification(context) ;
