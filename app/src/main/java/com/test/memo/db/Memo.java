@@ -1,8 +1,11 @@
 package com.test.memo.db;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.Date;
 
-public class memo {
+public class Memo extends DataSupport{
+    private int id;
     private Date data;
     private String title;
     private String content;
@@ -28,5 +31,13 @@ public class memo {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

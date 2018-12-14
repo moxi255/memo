@@ -1,17 +1,18 @@
-package com.test.memo.view;
+package com.test.memo.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.EmbossMaskFilter;
 import android.graphics.Paint;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
+
 
 ;
 
-public class AddView extends Button {
+public class AddView extends AppCompatButton {
     public AddView(Context context) {
         super(context);
     }
