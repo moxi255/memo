@@ -25,7 +25,12 @@ public class MemoAdapter extends BaseAdapter {
     public int getCount() {
         return mData.size();
     }
-
+    public void remove(int position) {
+        if(mData != null) {
+            mData.remove(position);
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public Object getItem(int position) {
         return mData.get(position);
@@ -35,12 +40,7 @@ public class MemoAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
-    public void remove(Memo data) {
-        if(mData != null) {
-            mData.remove(data);
-        }
-        notifyDataSetChanged();
-    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;

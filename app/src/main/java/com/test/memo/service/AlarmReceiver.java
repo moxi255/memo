@@ -13,16 +13,19 @@ import android.util.Log;
 
 import com.test.memo.MainActivity;
 import com.test.memo.R;
+import com.test.memo.db.Memo;
 import com.test.memo.util.MyApplication;
 
-public class AlarmReceiver extends BroadcastReceiver {
+import org.litepal.crud.DataSupport;
 
+public class AlarmReceiver extends BroadcastReceiver {
+    int id;
     @Override
     public void onReceive(Context context, Intent intent) {
         showNotification(context) ;
-
+        id=intent.getIntExtra("id",-1);
         }
-    public static void showNotification(Context context) {
+    public  void showNotification(Context context) {
         Notification notification = new NotificationCompat.Builder(context)
                 /**设置通知左边的大图标**/
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
@@ -49,5 +52,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         /**发起通知**/
         notificationManager.notify(0, notification);
+        DataSupport.deleteAll(Memo.class,"id=?",String.valueOf(id));
+
     }
 }

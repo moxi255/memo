@@ -38,6 +38,8 @@ public class LongRunningService extends Service {
         Intent intent = new Intent(context,AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
+
+        intent.putExtra("id",alarmId);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0);
         //注册新提醒
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

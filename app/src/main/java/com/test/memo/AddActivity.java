@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout selectTime;
-    LongRunningService longRunningService;
+/*    LongRunningService longRunningService;*/
     private TextView editTitle,edit_body,edit_headText;
     private TextView currentTime;
     private Button saveBtn,backBtn;
@@ -68,8 +68,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         backBtn.setOnClickListener(this);
         context=AddActivity.this;
         bundle=new Bundle();
-        Intent serviceIntent =new Intent(AddActivity.this,LongRunningService.class);
-        bindService(serviceIntent,mConnection, Context.BIND_AUTO_CREATE);
+       /* Intent serviceIntent =new Intent(AddActivity.this,LongRunningService.class);
+        bindService(serviceIntent,mConnection, Context.BIND_AUTO_CREATE);*/
     }
     @Override
     public void onClick(View v) {
@@ -102,8 +102,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                         memo.setData(date);
                         memo.setContent(body);
                         memo.update(memo.getId());
-                        longRunningService.cancelAlarm(context,memo.getId(),bundle);
-                        longRunningService.addAlarm(context,memo.getId(),bundle,time);
+                        LongRunningService.cancelAlarm(context,memo.getId(),bundle);
+                        LongRunningService.addAlarm(context,memo.getId(),bundle,time);
                         Toast.makeText(this, "提醒修改成功", Toast.LENGTH_LONG).show();
                     }
                 }else{
@@ -115,7 +115,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                         memo.setTitle(title);
                         memo.save();
                         Log.i("aaa",String.valueOf(memo.getId()));
-                        longRunningService.addAlarm(context,memo.getId(),bundle,time);
+                        LongRunningService.addAlarm(context,memo.getId(),bundle,time);
                         Toast.makeText(this, "提醒设置成功", Toast.LENGTH_LONG).show();
                     }
 
@@ -146,7 +146,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         customDatePicker1.showSpecificTime(true); // 显示时和分
         customDatePicker1.setIsLoop(true); // 允许循环滚动
     }
-    private ServiceConnection mConnection=new ServiceConnection() {
+   /* private ServiceConnection mConnection=new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             longRunningService=((LongRunningService.LocalBinder)service).getService();
@@ -155,7 +155,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         public void onServiceDisconnected(ComponentName name) {
             longRunningService=null;
         }
-    };
+    };*/
     private boolean check(String title,String body){
         boolean flag = true;
         if ("".equals(title)){

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.memo">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".util.MyApplication"
@@ -19,6 +20,12 @@
         </activity>
         <activity android:name=".ShowActivity" />
         <activity android:name=".AddActivity" />
+        <receiver android:name=".service.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".service.AlarmReceiver">
             <intent-filter>
                 <action android:name="com.test.memo.MY_BROADCAST"/>

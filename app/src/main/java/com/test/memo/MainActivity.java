@@ -95,9 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Memo memo=(Memo)mdapter.getItem(position);
                 LongRunningService.cancelAlarm(mContext,memo.getId(),bundle);
                 DataSupport.deleteAll(Memo.class,"id=?",String.valueOf(memo.getId()));
-                Log.i("123",memo.getTitle());
-                Log.i("123",memo.getData().toString());
-                Log.i("123",String.valueOf(memo.getId()));
+                mdapter.remove(position);
                 arg0.dismiss();
             }
         });
