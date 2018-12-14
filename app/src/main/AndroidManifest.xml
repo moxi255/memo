@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowActivity" />
         <activity android:name=".AddActivity" />
         <receiver android:name=".service.BootBroadcastReceiver">
             <intent-filter>

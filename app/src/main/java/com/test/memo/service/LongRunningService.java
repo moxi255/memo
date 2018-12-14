@@ -33,8 +33,7 @@ public class LongRunningService extends Service {
         return mBinder;
     }
     public static void addAlarm(Context context, int alarmId, Bundle bundle, Long second){
-        Log.i("1234","1234");
-        Log.i("s",second.toString());
+
         Intent intent = new Intent(context,AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);

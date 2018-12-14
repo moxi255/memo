@@ -22,8 +22,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     int id;
     @Override
     public void onReceive(Context context, Intent intent) {
-        showNotification(context) ;
+        ;
         id=intent.getIntExtra("id",-1);
+        showNotification(context);
+        Log.i("123",String.valueOf(id));
         }
     public  void showNotification(Context context) {
         Notification notification = new NotificationCompat.Builder(context)
