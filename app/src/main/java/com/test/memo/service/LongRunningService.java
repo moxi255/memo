@@ -8,7 +8,8 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
+
+import com.test.memo.db.Memo;
 
 
 public class LongRunningService extends Service {
@@ -32,14 +33,14 @@ public class LongRunningService extends Service {
         // TODO: Return the communication channel to the service.
         return mBinder;
     }
-    public static void addAlarm(Context context, int alarmId, Bundle bundle, Long second){
+    public static void addAlarm(Context context, Memo memo, Bundle bundle, Long second){
 
         Intent intent = new Intent(context,AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-
-        intent.putExtra("id",alarmId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0);
+        intent.putExtra("memo",memo);
+        intent.putExtra("id",memo.getId());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,memo.getId(),intent,0);
         //注册新提醒
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

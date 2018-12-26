@@ -17,14 +17,23 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_gravity="start"
                 android:id="@+id/headText"
-                android:layout_width="match_parent"
+                android:layout_weight="12"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:text="@string/add_title_text"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp" />
 
+            <Button
+                android:id="@+id/select_Type"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@mipmap/tag" />
         </LinearLayout>
         <RelativeLayout
             android:id="@+id/body"

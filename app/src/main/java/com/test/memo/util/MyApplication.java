@@ -1,10 +1,10 @@
 package com.test.memo.util;
 
-import android.app.Application;
+
 import android.content.Context;
 
 import org.litepal.LitePalApplication;
-import org.litepal.util.Const;
+
 
 
 public class MyApplication extends LitePalApplication {
@@ -17,6 +17,7 @@ public class MyApplication extends LitePalApplication {
         super.onCreate();
 
     }
+
     public static Context getContext(){
         return context;
     }

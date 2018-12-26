@@ -1,7 +1,9 @@
 package com.test.memo;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -15,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.test.memo.dao.dao;
 import com.test.memo.db.Memo;
+import com.test.memo.db.MemoType;
 import com.test.memo.service.LongRunningService;
 import com.test.memo.widget.CustomDatePicker;
 
@@ -23,19 +27,25 @@ import org.litepal.crud.DataSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout selectTime;
+    private int index=-1;
+
+    private String[] strings;
 /*    LongRunningService longRunningService;*/
     private TextView editTitle,edit_body,edit_headText;
     private TextView currentTime;
-    private Button saveBtn,backBtn;
+    private Button saveBtn,backBtn,selectBtn;
     private CustomDatePicker customDatePicker1;
     Context context;
     Bundle bundle;
     Memo memo;
+    MemoType memoType;
     Boolean flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_add);
         bindView();
         initDatePicker();
+
         memo=(Memo)getIntent().getSerializableExtra("memo");
         if(memo!=null){
             edit_body.setText(memo.getContent());
@@ -64,8 +75,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         edit_body=findViewById(R.id.edit_body);
         saveBtn=findViewById(R.id.button_save);
         backBtn=findViewById(R.id.button_back);
+        selectBtn=findViewById(R.id.select_Type);
         saveBtn.setOnClickListener(this);
         backBtn.setOnClickListener(this);
+        selectBtn.setOnClickListener(this);
         context=AddActivity.this;
         bundle=new Bundle();
        /* Intent serviceIntent =new Intent(AddActivity.this,LongRunningService.class);
@@ -103,19 +116,25 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                         memo.setContent(body);
                         memo.update(memo.getId());
                         LongRunningService.cancelAlarm(context,memo.getId(),bundle);
-                        LongRunningService.addAlarm(context,memo.getId(),bundle,time);
+                        LongRunningService.addAlarm(context,memo,bundle,time);
                         Toast.makeText(this, "提醒修改成功", Toast.LENGTH_LONG).show();
                     }
                 }else{
                     if(check(title,body)){
-
+                        if(memoType==null){
+                            memoType=findMemoTypeId("weifenzu");
+                        }
+                        Log.i("查询到的Memotype",memoType.toString());
                         Memo memo =new Memo();
                         memo.setContent(body);
                         memo.setData(date);
                         memo.setTitle(title);
+                        memo.setMemotype_id(memoType.getId());
                         memo.save();
-                        Log.i("aaa",String.valueOf(memo.getId()));
-                        LongRunningService.addAlarm(context,memo.getId(),bundle,time);
+                        memoType.setCount(memoType.getCount()+1);
+                        memoType.update(memoType.getId());
+                        Log.i("查询到的Memotype",memoType.toString());
+                        LongRunningService.addAlarm(context,memo,bundle,time);
                         Toast.makeText(this, "提醒设置成功", Toast.LENGTH_LONG).show();
                     }
 
@@ -126,6 +145,45 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.button_back:
                 startActivity(new Intent(AddActivity.this,MainActivity.class));
                 break;
+            case R.id.select_Type:
+                List<MemoType> memoTypeList=DataSupport.findAll(MemoType.class);
+                List<String> items=new ArrayList<String>();
+
+                for(MemoType memoType:memoTypeList){
+                    items.add(memoType.getName());
+                }
+                strings= new String[memoTypeList.size()];
+                items.toArray(strings);
+
+                AlertDialog alertDialog4 = new AlertDialog.Builder(this)
+                        .setTitle("选择分组")
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setSingleChoiceItems(strings , 0, new DialogInterface.OnClickListener() {//添加单选框
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                index = i;
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if(index==-1){
+                                    index=0;
+                                }
+                                memoType=findMemoTypeId(strings[index]);
+                                Toast.makeText(AddActivity.this, "这是确定按钮" + "点的是：" + strings[index], Toast.LENGTH_SHORT).show();
+                            }
+                        })
+
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(AddActivity.this, "这是取消按钮", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .create();
+                alertDialog4.show();
+
         }
     }
     private void initDatePicker() {
@@ -146,16 +204,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         customDatePicker1.showSpecificTime(true); // 显示时和分
         customDatePicker1.setIsLoop(true); // 允许循环滚动
     }
-   /* private ServiceConnection mConnection=new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            longRunningService=((LongRunningService.LocalBinder)service).getService();
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            longRunningService=null;
-        }
-    };*/
+
     private boolean check(String title,String body){
         boolean flag = true;
         if ("".equals(title)){
@@ -172,5 +221,17 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         }
         return flag;
     }
+    public MemoType findMemoTypeId(String name){
+        List<MemoType> memoTypes=DataSupport.select("id","name","iconId" ,"count")
+                .where("name= ?", name)
+                .find(MemoType.class);
+            for(MemoType memoType:memoTypes){
+                Log.i("查询到的Memotype",memoType.toString());
+                return memoType;
+            }
 
+
+
+        return null;
+    }
 }

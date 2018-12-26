@@ -7,27 +7,34 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 
 import com.test.memo.MainActivity;
 import com.test.memo.R;
 import com.test.memo.db.Memo;
-import com.test.memo.util.MyApplication;
+import com.test.memo.db.MemoType;
+
 
 import org.litepal.crud.DataSupport;
 
 public class AlarmReceiver extends BroadcastReceiver {
     int id;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        ;
+
+
         id=intent.getIntExtra("id",-1);
-        showNotification(context);
-        Log.i("123",String.valueOf(id));
+        Memo memo=(Memo)intent.getSerializableExtra("memo");
+
+        showNotification(context,memo);
+
+
         }
-    public  void showNotification(Context context) {
+    public  void showNotification(Context context,Memo memo) {
         Notification notification = new NotificationCompat.Builder(context)
                 /**设置通知左边的大图标**/
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
@@ -36,9 +43,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 /**通知首次出现在通知栏，带上升动画效果的**/
                 .setTicker("通知来了")
                 /**设置通知的标题**/
-                .setContentTitle("这是一个通知的标题")
+                .setContentTitle(memo.getTitle())
                 /**设置通知的内容**/
-                .setContentText("这是一个通知的内容这是一个通知的内容")
+                .setContentText(memo.getContent())
                 /**通知产生的时间，会在通知信息里显示**/
                 .setWhen(System.currentTimeMillis())
                 /**设置该通知优先级**/
@@ -55,6 +62,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         /**发起通知**/
         notificationManager.notify(0, notification);
         DataSupport.deleteAll(Memo.class,"id=?",String.valueOf(id));
+        Log.i("分组id",String.valueOf(memo.getMemotype_id()));
+        MemoType memoType=DataSupport.find(MemoType.class,memo.getMemotype_id());
+        memoType.setCount(memoType.getCount()-1);
+        memoType.save();
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        context.startActivity(intent);
 
     }
 }

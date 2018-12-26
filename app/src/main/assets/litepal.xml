@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="db"></dbname>
-    <version value="2"></version>
+    <version value="9"></version>
     <list>
         <mapping class="com.test.memo.db.Memo"></mapping>
+        <mapping class="com.test.memo.db.MemoType"></mapping>
     </list>
 </litepal>

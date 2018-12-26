@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <RelativeLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/content"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
 
-        </ListView>
-        <com.test.memo.widget.AddView
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
-            android:id="@+id/add_view"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/bg_add_view"
-            android:elevation="8dip" />
-    </RelativeLayout>
+            </ListView>
+            <com.test.memo.widget.AddView
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="5dp"
+                android:id="@+id/add_view"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_add_view"
+                android:elevation="8dip" />
+        </RelativeLayout>
+        <fragment
+            android:id="@+id/left123"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:name="com.test.memo.LeftFragment"
+            android:layout_gravity="left"
+            android:tag="LEFT"/>
+
+
+
+    </android.support.v4.widget.DrawerLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

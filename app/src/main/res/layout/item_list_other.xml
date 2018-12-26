@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/typeEdit"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_width="100dp"
+        android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/typeSave"
+        android:text="@string/button_save"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+    </LinearLayout>
+</RelativeLayout>
